@@ -4,12 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["v3code <vitalik.w555@gmail.com>"]
 readme = "README.md"
-packages = [{include = "python_project_83"}]
+packages = [{include = "page_analyzer"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 flask = "^2.3.2"
 gunicorn = "^20.1.0"
+python-dotenv = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
