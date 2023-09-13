@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: page_analyzer
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+
+
+  app:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:8080:8080"
+    command:
+      - make dev
+    depends_on:
+      - db
