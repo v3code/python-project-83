@@ -31,7 +31,4 @@ class URLService:
         return Success(UrlDTO(**url))
 
     def get_all_urls(self) -> List[UrlDTO]:
-        urls = self._repository.get_all_urls()
-        if urls is None:
-            return []
         return [UrlDTO(**url) for url in self._repository.get_all_urls()]
