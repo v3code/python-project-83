@@ -21,8 +21,10 @@ max_connections = os.environ.get('DB_MAX_CONNECTIONS', 10)
 db_uri = os.environ.get('DATABASE_URI')
 
 db = DatabaseHandler(db_uri, min_connections, max_connections)
+
 url_repository = URLRepository(db)
 url_service = URLService(url_repository)
+
 
 
 @app.get("/")
@@ -45,7 +47,7 @@ def add_url():
             return redirect(url_for('show_url_by_id', url_id=url.id))
         case Failure(ValidationError()) as result:
             flash(result.failure().get_message(), 'danger')
-            return render_template('index.html', url_name=url_name)
+            return render_template('index.html', url_name=url_name), 422
         case Failure(URLExistsError()) as result:
             failure = result.failure()
             flash(failure.get_message(), 'info')
@@ -55,12 +57,23 @@ def add_url():
 
 @app.get('/urls/<int:url_id>')
 def show_url_by_id(url_id: int):
-    result = url_service.get_url_by_id(url_id)
+    result = url_service.get_url_and_checks_by_id(url_id)
     match result:
-        case Success(url):
-            return render_template('urls/url_info.html', url=url)
+        case Success((url, checks)):
+            return render_template('urls/url_info.html', url=url, checks=checks)
         case Failure(URLNotExistsError()) as result:
             failure = result.failure()
             flash(failure.get_message(), 'danger')
             return redirect(url_for('show_urls'))
 
+
+@app.post('/urls/<int:url_id>/checks')
+def check_url(url_id: int):
+    result = url_service.check_url(url_id)
+    match result:
+        case Success():
+            return redirect(url_for('show_url_by_id', url_id=url_id))
+        case Failure(URLNotExistsError()) as result:
+            failure = result.failure()
+            flash(failure.get_message(), 'danger')
+            return redirect(url_for('show_urls'))

@@ -1,4 +1,4 @@
-from page_analyzer.dto import UrlDTO
+from page_analyzer.data import UrlDTO
 
 
 class FlashableError(RuntimeError):

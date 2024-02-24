@@ -10,7 +10,7 @@ class URLRepository:
     def add_url(self, name: str):
         query = "INSERT INTO urls (name, created_at)" \
                 " VALUES (%s, %s)" \
-                " RETURNING id;"
+                " RETURNING *;"
         return self._db.fetch_one(query, (name, datetime.now()))
 
     def get_url_by_id(self, url_id: int):
@@ -24,3 +24,13 @@ class URLRepository:
     def get_all_urls(self):
         query = "SELECT * FROM urls;"
         return self._db.fetch_all(query)
+
+    def add_check(self, url_id: int):
+        query = "INSERT INTO url_checks (url_id, created_at)" \
+                " VALUES (%s, %s)" \
+                " RETURNING *;"
+        return self._db.fetch_one(query, (url_id, datetime.now()))
+
+    def get_checks_for_url_id(self, url_id: int):
+        query = "SELECT * FROM url_checks WHERE url_id = %s;"
+        return self._db.fetch_all(query, (url_id,))
