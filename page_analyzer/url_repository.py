@@ -1,20 +1,26 @@
-from psycopg2.pool import AbstractConnectionPool
+from datetime import datetime
+
+from page_analyzer.db import DatabaseHandler
 
 
 class URLRepository:
-    def __init__(self, pool: AbstractConnectionPool):
-        self._pool = pool
+    def __init__(self, db: DatabaseHandler):
+        self._db = db
 
-    def add_url(self,
-                add_url_dto):
-        pass
+    def add_url(self, name: str):
+        query = "INSERT INTO urls (name, created_at)" \
+                " VALUES (%s, %s)" \
+                " RETURNING id;"
+        return self._db.fetch_one(query, (name, datetime.now()))
 
-    def add_url_analysis(self,
-                         add_url_analysis_dto):
-        pass
+    def get_url_by_id(self, url_id: int):
+        query = "SELECT * FROM urls WHERE id = %s;"
+        return self._db.fetch_one(query, (url_id,))
 
-    def get_url_analysis(self):
-        pass
+    def get_url_by_name(self, name: str):
+        query = "SELECT * FROM urls WHERE name = %s;"
+        return self._db.fetch_one(query, (name,))
 
-    def get_url(self):
-        pass
+    def get_all_urls(self):
+        query = "SELECT * FROM urls;"
+        return self._db.fetch_all(query)

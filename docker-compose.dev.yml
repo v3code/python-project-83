@@ -19,11 +19,14 @@ services:
       target: dev
     volumes:
       - .:/app
+      - /app/db_data/
+      - /app/.venv/
     env_file:
       - .env
+    environment:
+      HOST: 0.0.0.0
     ports:
-      - "127.0.0.1:8080:8080"
-    command:
-      - make dev
+      - "127.0.0.1:7777:7777"
+    command: make install_start_dev
     depends_on:
       - db

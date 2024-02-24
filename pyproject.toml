@@ -12,6 +12,8 @@ flask = "^2.3.2"
 gunicorn = "^20.1.0"
 python-dotenv = "^1.0.0"
 psycopg2 = "^2.9.6"
+returns = "^0.22.0"
+validators = "^0.22.0"
 
 
 [tool.poetry.group.dev.dependencies]

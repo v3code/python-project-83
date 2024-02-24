@@ -4,7 +4,8 @@ RUN apt update
 RUN apt install -y make build-essential libpq5
 WORKDIR /app
 COPY . .
+RUN poetry config virtualenvs.create false
 
 FROM base as dev
-RUN POETRY_VIRTUALENVS_CREATE=false poetry install --no-interaction
+RUN POETRY_INSTALLER_MAX_WORKERS=1 poetry install --no-interaction
 
