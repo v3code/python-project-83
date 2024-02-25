@@ -25,11 +25,11 @@ class URLRepository:
         query = "SELECT * FROM urls;"
         return self._db.fetch_all(query)
 
-    def add_check(self, url_id: int):
-        query = "INSERT INTO url_checks (url_id, created_at)" \
-                " VALUES (%s, %s)" \
+    def add_check(self, url_id: int, status_code: int):
+        query = "INSERT INTO url_checks (url_id, status_code, created_at)" \
+                " VALUES (%s, %s, %s)" \
                 " RETURNING *;"
-        return self._db.fetch_one(query, (url_id, datetime.now()))
+        return self._db.fetch_one(query, (url_id, status_code, datetime.now()))
 
     def get_checks_for_url_id(self, url_id: int):
         query = "SELECT * FROM url_checks WHERE url_id = %s;"

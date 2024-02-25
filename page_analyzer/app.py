@@ -6,7 +6,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash
 from returns.result import Success, Failure
 
 from page_analyzer.db import DatabaseHandler
-from page_analyzer.errors import ValidationError, URLExistsError, URLNotExistsError
+from page_analyzer.errors import ValidationError, URLExistsError, URLNotExistsError, UrlCheckError
 from page_analyzer.url_repository import URLRepository
 from page_analyzer.url_service import URLService
 
@@ -26,7 +26,6 @@ url_repository = URLRepository(db)
 url_service = URLService(url_repository)
 
 
-
 @app.get("/")
 def index():
     return render_template('index.html')
@@ -44,11 +43,12 @@ def add_url():
     result = url_service.add_url(url_name)
     match result:
         case Success(url):
+            flash('Страница успешно добавлена', 'success')
             return redirect(url_for('show_url_by_id', url_id=url.id))
-        case Failure(ValidationError()) as result:
+        case Failure(ValidationError()):
             flash(result.failure().get_message(), 'danger')
             return render_template('index.html', url_name=url_name), 422
-        case Failure(URLExistsError()) as result:
+        case Failure(URLExistsError()):
             failure = result.failure()
             flash(failure.get_message(), 'info')
             url = failure.get_url()
@@ -72,8 +72,12 @@ def check_url(url_id: int):
     result = url_service.check_url(url_id)
     match result:
         case Success():
+            flash("Страница успешно проверена", "success")
             return redirect(url_for('show_url_by_id', url_id=url_id))
         case Failure(URLNotExistsError()) as result:
             failure = result.failure()
             flash(failure.get_message(), 'danger')
-            return redirect(url_for('show_urls'))
+            return redirect(url_for('show_url_by_id', url_id=url_id))
+        case Failure(UrlCheckError()):
+            flash(result.failure().get_message(), 'danger')
+            return redirect(url_for('show_url_by_id', url_id=url_id))
