@@ -25,4 +25,4 @@ install_start_dev:
 
 
 start:
-	poetry run gunicorn -w 5 -b ${HOST}:$(PORT) page_analyzer:app
+	poetry run gunicorn -w 5 -b ${HOST}:${PORT} page_analyzer:app
