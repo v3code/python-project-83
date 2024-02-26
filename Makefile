@@ -5,6 +5,7 @@ install-dev:
 	poetry install
 
 install-prod:
+	build.sh
 	poetry install --only main
 
 
