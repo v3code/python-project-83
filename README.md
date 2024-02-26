@@ -3,11 +3,11 @@
 
 # Page Analyzer
 
-Example: https://app-5o9k.onrender.com/urls
+Example: https://app-5o9k.onrender.com
 
 Simple flask app for analyzing basic seo information from sites
 
-# How to start locally
+## How to start locally
 The best way to start this app locally is to use docker with docker-compose plugin
 
 First fill up .env file according to .env.example.
