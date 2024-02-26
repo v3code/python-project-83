@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "SEO information analyzer app"
 authors = ["v3code <vitalik.w555@gmail.com>"]
 readme = "README.md"
-packages = [{include = "page_analyzer"}]
+packages = [{ include = "page_analyzer" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -19,7 +19,7 @@ beautifulsoup4 = "^4.12.3"
 
 
 [tool.poetry.group.dev.dependencies]
-pylama = {extras = ["all"], version = "^8.4.1"}
+pylama = { extras = ["all"], version = "^8.4.1" }
 
 [build-system]
 requires = ["poetry-core"]
