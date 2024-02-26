@@ -12,7 +12,7 @@ from psycopg2.extensions import cursor
 
 
 def get_connection_resolver_from_env():
-    db_uri = os.environ['DATABASE_URI']
+    db_uri = os.environ['DATABASE_URL']
     use_single_connection = os.environ.get('USE_SINGLE_CONNECTION', 'false')
 
     if use_single_connection == 'true':
