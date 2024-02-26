@@ -4,13 +4,12 @@ lint:
 install-dev:
 	poetry install
 
-install-prod:
-	build.sh
-	poetry install --only main
-
-
 build:
 	./build.sh
+
+
+install-prod: build
+	poetry install --only main
 
 
 PORT ?= 8000
