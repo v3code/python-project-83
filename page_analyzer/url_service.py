@@ -7,7 +7,7 @@ from page_analyzer.errors import URLExistsError, FlashableError, \
 from page_analyzer.url_repository import URLRepository
 from returns.result import Result, Success, Failure
 import requests
-from page_analyzer.utils import validate_url, parse_url
+from page_analyzer.utils import validate_url, parse_url, normalize_url
 
 
 class URLService:
@@ -18,7 +18,7 @@ class URLService:
         error = validate_url(name)
         if error is not None:
             return Failure(ValidationError(error))
-        url = self._repository.get_url_by_name(name)
+        url = self._repository.get_url_by_name(normalize_url(name))
         if url is not None:
             return Failure(URLExistsError(UrlDTO(**url)))
         url = self._repository.add_url(name)
