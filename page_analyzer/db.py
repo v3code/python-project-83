@@ -15,7 +15,7 @@ def get_connection_resolver_from_env():
     db_uri = os.environ['DATABASE_URI']
     use_single_connection = os.environ.get('USE_SINGLE_CONNECTION', 'false')
 
-    if use_single_connection:
+    if use_single_connection == 'true':
         return SingleConnectionResolver(db_uri)
 
     min_connections = int(os.environ.get('DB_MIN_CONNECTIONS', 1))
