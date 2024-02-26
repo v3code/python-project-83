@@ -26,7 +26,8 @@ class URLRepository:
         return self._db.fetch_all(query)
 
     def get_latest_checks(self):
-        query = 'SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id DESC, created_at ASC;'
+        query = 'SELECT DISTINCT ON (url_id) * FROM url_checks ' \
+                'ORDER BY url_id DESC, created_at ASC;'
         return self._db.fetch_all(query)
 
     def add_check(self,

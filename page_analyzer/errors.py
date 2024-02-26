@@ -35,4 +35,3 @@ class URLNotExistsError(FlashableError):
 class UrlCheckError(FlashableError):
     def __init__(self):
         super().__init__("Произошла ошибка при проверке")
-

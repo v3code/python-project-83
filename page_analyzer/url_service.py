@@ -2,7 +2,8 @@ from typing import List, Tuple
 from dataclasses import asdict
 
 from page_analyzer.data import UrlDTO, UrlCheckDTO, UrlInfo, UrlLatestCheck
-from page_analyzer.errors import URLExistsError, FlashableError, ValidationError, URLNotExistsError, UrlCheckError
+from page_analyzer.errors import URLExistsError, FlashableError, \
+    ValidationError, URLNotExistsError, UrlCheckError
 from page_analyzer.url_repository import URLRepository
 from returns.result import Result, Success, Failure
 import requests
@@ -52,7 +53,8 @@ class URLService:
 
         return result
 
-    def get_url_and_checks_by_id(self, url_id: int) -> Result[Tuple[UrlDTO, List[UrlCheckDTO]], FlashableError]:
+    def get_url_and_checks_by_id(self, url_id: int) \
+            -> Result[Tuple[UrlDTO, List[UrlCheckDTO]], FlashableError]:
         result = self.get_url_by_id(url_id)
         return result.map(self._compose_url_and_checks)
 

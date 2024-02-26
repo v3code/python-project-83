@@ -1,11 +1,8 @@
 from typing import Optional, Dict
 from urllib.parse import urlparse
 
-import requests
 from bs4 import BeautifulSoup
 from validators import url as is_valid_url
-
-from page_analyzer.data import UrlInfo
 
 
 def validate_url(url: str) -> Optional[str]:
