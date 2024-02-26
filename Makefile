@@ -4,11 +4,7 @@ lint:
 install-dev:
 	poetry install
 
-build:
-	./build.sh
-
-
-install-prod: build
+install-prod:
 	poetry install --only main
 
 
