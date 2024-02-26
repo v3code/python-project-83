@@ -22,15 +22,30 @@ class URLRepository:
         return self._db.fetch_one(query, (name,))
 
     def get_all_urls(self):
-        query = "SELECT * FROM urls;"
+        query = "SELECT * FROM urls ORDER BY id DESC;"
         return self._db.fetch_all(query)
 
-    def add_check(self, url_id: int, status_code: int):
-        query = "INSERT INTO url_checks (url_id, status_code, created_at)" \
-                " VALUES (%s, %s, %s)" \
+    def get_latest_checks(self):
+        query = 'SELECT DISTINCT ON (url_id) * FROM url_checks ORDER BY url_id DESC, created_at ASC;'
+        return self._db.fetch_all(query)
+
+    def add_check(self,
+                  url_id: int,
+                  status_code: int,
+                  h1: str,
+                  title: str,
+                  description: str):
+        query = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)" \
+                " VALUES (%s, %s, %s, %s, %s, %s)" \
                 " RETURNING *;"
-        return self._db.fetch_one(query, (url_id, status_code, datetime.now()))
+        return self._db.fetch_one(query,
+                                  (url_id,
+                                   status_code,
+                                   h1,
+                                   title,
+                                   description,
+                                   datetime.now()))
 
     def get_checks_for_url_id(self, url_id: int):
-        query = "SELECT * FROM url_checks WHERE url_id = %s;"
+        query = "SELECT * FROM url_checks WHERE url_id = %s ORDER BY id DESC;"
         return self._db.fetch_all(query, (url_id,))

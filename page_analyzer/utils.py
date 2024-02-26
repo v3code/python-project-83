@@ -1,7 +1,11 @@
-from typing import Optional
+from typing import Optional, Dict
 from urllib.parse import urlparse
 
+import requests
+from bs4 import BeautifulSoup
 from validators import url as is_valid_url
+
+from page_analyzer.data import UrlInfo
 
 
 def validate_url(url: str) -> Optional[str]:
@@ -19,3 +23,13 @@ def normalize_url(url: str):
     scheme = out.scheme.lower()
     netloc = out.netloc.lower()
     return f'{scheme}://{netloc}'
+
+
+def parse_url(page: str, length_limit: int = 255) -> Dict[str, str]:
+    soup = BeautifulSoup(page, 'html.parser')
+    title = soup.find('title').text if soup.find('title') else ''
+    h1 = soup.find('h1').text if soup.find('h1') else ''
+    description = soup.find('meta', attrs={'name': 'description'})
+    return dict(h1=h1[:length_limit],
+                title=title[:length_limit],
+                description=description['content'][:length_limit] if description else '')

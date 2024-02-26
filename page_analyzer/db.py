@@ -4,12 +4,13 @@ from typing import Optional, Sequence, Any
 from urllib.parse import urlparse
 
 from psycopg2.pool import SimpleConnectionPool, AbstractConnectionPool
-from psycopg2.extras import RealDictCursor, DictCursorBase
+from psycopg2.extras import RealDictCursor
+from psycopg2.extensions import cursor
 
 
 @contextmanager
 def create_cursor(pool: AbstractConnectionPool,
-                  cursor_factory: Optional[DictCursorBase] = RealDictCursor):
+                  cursor_factory: cursor = RealDictCursor):
     conn = pool.getconn()
     cursor = conn.cursor(cursor_factory=cursor_factory)
     yield cursor

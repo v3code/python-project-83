@@ -33,7 +33,7 @@ def index():
 
 @app.get("/urls")
 def show_urls():
-    urls = url_service.get_all_urls()
+    urls = url_service.get_urls_with_latest_checks()
     return render_template('urls/urls_list.html', urls=urls)
 
 
