@@ -18,7 +18,8 @@ class URLService:
         error = validate_url(name)
         if error is not None:
             return Failure(ValidationError(error))
-        url = self._repository.get_url_by_name(normalize_url(name))
+        name = normalize_url(name)
+        url = self._repository.get_url_by_name(name)
         if url is not None:
             return Failure(URLExistsError(UrlDTO(**url)))
         url = self._repository.add_url(name)
