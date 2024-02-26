@@ -36,7 +36,8 @@ class URLRepository:
                   h1: str,
                   title: str,
                   description: str):
-        query = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)" \
+        query = "INSERT INTO url_checks " \
+                "(url_id, status_code, h1, title, description, created_at)" \
                 " VALUES (%s, %s, %s, %s, %s, %s)" \
                 " RETURNING *;"
         return self._db.fetch_one(query,

@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, request, flash
 from returns.result import Success, Failure
 
-from page_analyzer.db import DatabaseHandler
-from page_analyzer.errors import ValidationError, URLExistsError, URLNotExistsError, UrlCheckError
+from page_analyzer.db import DatabaseHandler, get_connection_resolver_from_env
+from page_analyzer.errors import ValidationError, URLExistsError, \
+    URLNotExistsError, UrlCheckError
 from page_analyzer.url_repository import URLRepository
 from page_analyzer.url_service import URLService
 
@@ -15,11 +16,9 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
-min_connections = os.environ.get('DB_MIN_CONNECTIONS', 1)
-max_connections = os.environ.get('DB_MAX_CONNECTIONS', 10)
-db_uri = os.environ.get('DATABASE_URI')
+connection_resolver = get_connection_resolver_from_env()
 
-db = DatabaseHandler(db_uri, min_connections, max_connections)
+db = DatabaseHandler(connection_resolver)
 
 url_repository = URLRepository(db)
 url_service = URLService(url_repository)
