@@ -79,3 +79,8 @@ def check_url(url_id: int):
         case Failure(UrlCheckError()):
             flash(result.failure().get_message(), 'danger')
             return redirect(url_for('show_url_by_id', url_id=url_id))
+
+
+@app.errorhandler(404)
+def page_not_found(_):
+    return render_template('errors/404.html'), 404
